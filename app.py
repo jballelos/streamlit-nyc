@@ -30,7 +30,7 @@ injured_people = st.slider("Number of persons injured in vehicle collisions", 0,
 st.map(data.query("injured_persons >= @injured_people")[["latitude", "longitude"]].dropna(how="any"))
 
 st.header("How many collisions occur during a given time of day?")
-hour = st.slider("Hour to look at", 0, 23)
+hour = st.slider("Hour to look at:", 0, 23)
 original_data = data
 data = data[data['date/time'].dt.hour == hour]
 
@@ -60,7 +60,7 @@ st.write(pdk.Deck(
     ],
 ))
 
-st.subheader("Breakdown by minute between %i:00 and %i:00" % (hour, (hour + 1) % 24))
+#st.subheader("Breakdown by minute between %i:00 and %i:00" % (hour, (hour + 1) % 24))
 filtered = data[
     (data['date/time'].dt.hour >= hour) & (data['date/time'].dt.hour < (hour + 1))
 ]
@@ -70,7 +70,7 @@ chart_data = pd.DataFrame({"minute": range(60), "crashes": hist})
 #st.write(fig)
 
 st.header("Top 5 dangerous streets by affected class")
-select = st.selectbox('Affected class', ['Pedestrians', 'Cyclists', 'Motorists'])
+select = st.selectbox('Affected class:', ['Pedestrians', 'Cyclists', 'Motorists'])
 
 if select == 'Pedestrians':
     st.write(original_data.query("injured_pedestrians >= 1")[["on_street_name", "injured_pedestrians"]].sort_values(by=['injured_pedestrians'], ascending=False).dropna(how="any")[:5])
